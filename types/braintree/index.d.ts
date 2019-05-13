@@ -3,6 +3,8 @@
 // Definitions by: Sam Rubin <https://github.com/smrubin>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
+import { ReadonlyDeep} from "type-fest";
+
 declare module 'braintree' {
 
     /**
@@ -48,14 +50,13 @@ declare module 'braintree' {
     type Entity = 'address' | 'creditCard' | 'customer' | 'dispute' | 'merchantAccount' | 'paymentMethod' | 'settlementBatchSummary' | 'subscription' | 'transaction';
 
     type ValidatedResponse<T> = {
-        [key in Entity]: T;
+        [key in Entity]: ReadonlyDeep<T>;
     } & {
-        success: boolean;
-        errors: () => string[];
-        message: string;
-        params: Record<string, any>;
+        readonly success: boolean;
+        errors: () => ReadonlyArray<string[]>;
+        readonly message: string;
+        params: ReadonlyDeep<Record<string, any>>;
     }
-
 
     /**
      * Gateways
@@ -68,7 +69,7 @@ declare module 'braintree' {
     export class AddressGateway {
         create(request: AddressRequest): Promise<ValidatedResponse<AddressResponse>>;
         delete(customerId: string, addressId: string): Promise<void>;
-        find(customerId: string, addressId: string): Promise<AddressResponse>;
+        find(customerId: string, addressId: string): Promise<ReadonlyDeep<AddressResponse>>;
         update(customerId: string, addressId: string, updates: Address): Promise<ValidatedResponse<AddressResponse>>;
     }
 
@@ -79,25 +80,25 @@ declare module 'braintree' {
     export class CreditCardGateway {
         create(request: CreditCardCreateRequest): Promise<ValidatedResponse<CreditCardResponse>>;
         delete(creditCardToken: string): Promise<void>;
-        expiringBetween(startDate: Date, endDate: Date): Promise<CreditCardResponse>;
-        find(creditCardToken: string): Promise<CreditCardResponse>;
+        expiringBetween(startDate: Date, endDate: Date): Promise<ReadonlyDeep<CreditCardResponse>>;
+        find(creditCardToken: string): Promise<ReadonlyDeep<CreditCardResponse>>;
         update(creditCardToken: string, updates: CreditCardUpdateRequest): Promise<ValidatedResponse<CreditCardResponse>>;
     }
 
     export class CreditCardVerificationGateway {
-        search(searchFn: any): Promise<CreditCardVerificationResponse[]>;
+        search(searchFn: any): Promise<ReadonlyDeep<CreditCardVerificationResponse[]>>;
     }
 
     export class CustomerGateway {
         create(request: CustomerCreateRequest): Promise<ValidatedResponse<CustomerResponse>>;
         delete(customerId: string): Promise<void>;
-        find(customerId: string): Promise<CustomerResponse>;
-        search(searchFn: any): Promise<CustomerResponse[]>;
+        find(customerId: string): Promise<ReadonlyDeep<CustomerResponse>>;
+        search(searchFn: any): Promise<ReadonlyDeep<CustomerResponse[]>>;
         update(customerId: string, updates: CustomerUpdateRequest): Promise<ValidatedResponse<CustomerResponse>>;
     }
 
     export class DiscountGateway {
-        all(): Promise<DiscountResponse[]>;
+        all(): Promise<ReadonlyDeep<DiscountResponse[]>>;
     }
 
     export class DisputeGateway {
@@ -105,66 +106,66 @@ declare module 'braintree' {
         addFileEvidence(disputeId: string, evidence: { documentId: string, category?: string }): Promise<ValidatedResponse<Evidence>>;
         addTextEvidence(disputeId: string, evidence: { content: string, category?: string}): Promise<ValidatedResponse<Evidence>>;
         finalize(disputeId: string): Promise<ValidatedResponse<DisputeResponse>>;
-        find(disputeId: string): Promise<DisputeResponse>;
+        find(disputeId: string): Promise<ReadonlyDeep<DisputeResponse>>;
         removeEvidence(disputeId: string, evidenceId: string): Promise<ValidatedResponse<DisputeResponse>>;
-        search(searchFn: any): Promise<DisputeResponse[]>;
+        search(searchFn: any): Promise<ReadonlyDeep<DisputeResponse[]>>;
     }
 
     export class MerchantAccountGateway {
-        all(): Promise<MerchantAccountResponse[]>;
+        all(): Promise<ReadonlyDeep<MerchantAccountResponse[]>>;
         create(request: MerchantAccountCreateRequest): Promise<ValidatedResponse<MerchantAccountResponse>>;
         createForCurrency(currency: string, id?: string): Promise<ValidatedResponse<MerchantAccountResponse>>;
-        update(merchantAccountId: string, updates: MerchantAccountRequest): Promise<ValidatedResponse<MerchantAccountResponse>>;
-        find(merchantAccountId: string): Promise<MerchantAccountResponse>;
+        update(merchantAccountId: string, updates: MerchantAccountUpdateRequest): Promise<ValidatedResponse<MerchantAccountResponse>>;
+        find(merchantAccountId: string): Promise<ReadonlyDeep<MerchantAccountResponse>>;
     }
 
     export class PaymentMethodGateway {
         create(request: PaymentMethodCreateRequest): Promise<ValidatedResponse<PaymentMethodResponse>>;
         delete(token: string): Promise<void>;
-        find(token: string): Promise<PaymentMethodResponse>;
-        grant(sharedPaymentMethodToken: string, options: {allowVaulting?: boolean, includeBillingPostalCode?: boolean, revokeAfter?: Date }): Promise<string>;
+        find(token: string): Promise<ReadonlyDeep<PaymentMethodResponse>>;
+        grant(sharedPaymentMethodToken: string, options: {allowVaulting?: boolean, includeBillingPostalCode?: boolean, revokeAfter?: Date }): Promise<Readonly<string>>;
         revoke(sharedPaymentMethodToken: string): Promise<void>;
         update(token: string, updates: PaymentMethodUpdateRequest): Promise<ValidatedResponse<PaymentMethodResponse>>;
     }
 
     export class PaymentMethodNonceGateway {
         create(paymentMethodToken: string): Promise<ValidatedResponse<PaymentMethodNonceResponse>>;
-        find(paymentMethodNonce: string): Promise<PaymentMethodNonceResponse>;
+        find(paymentMethodNonce: string): Promise<ReadonlyDeep<PaymentMethodNonceResponse>>;
     }
 
     export class PlanGateway {
-        all(): Promise<PlanResponse[]>;
+        all(): Promise<ReadonlyDeep<PlanResponse[]>>;
     }
 
     export class SettlementBatchSummaryGateway {
-        generate(request: {settlementDate: string, groupByCustomField?: string}): Promise<SettlementBatchSummaryResponse>;
+        generate(request: {settlementDate: string, groupByCustomField?: string}): Promise<ReadonlyDeep<SettlementBatchSummaryResponse>>;
     }
 
     export class SubscriptionGateway {
         cancel(subscriptionId: string): Promise<void>;
         create(request: SubscriptionRequest): Promise<ValidatedResponse<SubscriptionResponse>>;
-        find(subscriptionId: string): Promise<SubscriptionResponse>;
+        find(subscriptionId: string): Promise<ReadonlyDeep<SubscriptionResponse>>;
         retryCharge(subscriptionId: string, amount?: string, submitForSettlement?: boolean): Promise<ValidatedResponse<SubscriptionResponse>>;
-        search(searchFn: any): Promise<SubscriptionResponse[]>;
+        search(searchFn: any): Promise<ReadonlyDeep<SubscriptionResponse[]>>;
         update(subscriptionId: string, updates: SubscriptionRequest): Promise<ValidatedResponse<SubscriptionResponse>>;
     }
 
     export class TransactionGateway {
         cancelRelease(transactionId: string): Promise<void>;
         cloneTransaction(transactionId: string, options: {amount: string, options: {submitForSettlement: boolean}}): Promise<void>;
-        find(transactionId: string): Promise<TransactionResponse>;
-        holdInEscrow(transactionId: string): Promise<TransactionResponse>;
+        find(transactionId: string): Promise<ReadonlyDeep<TransactionResponse>>;
+        holdInEscrow(transactionId: string): Promise<ReadonlyDeep<TransactionResponse>>;
         refund(transactionId: string, amount?: string): Promise<ValidatedResponse<TransactionResponse>>;
-        releaseFromEscrow(transactionId: string): Promise<TransactionResponse>;
+        releaseFromEscrow(transactionId: string): Promise<ReadonlyDeep<TransactionResponse>>;
         sale(request: TransactionRequest): Promise<ValidatedResponse<TransactionResponse>>;
-        search(searchFn: any): Promise<TransactionResponse[]>;
+        search(searchFn: any): Promise<ReadonlyDeep<TransactionResponse[]>>;
         submitForPartialSettlement(authorizedTransactionId: string, amount: string): Promise<ValidatedResponse<TransactionResponse>>;
         submitForSettlement(transactionId: string, amount?: string): Promise<ValidatedResponse<TransactionResponse>>;
         void(transactionId: string): Promise<ValidatedResponse<TransactionResponse>>;
     }
 
     export class TransactionLineItemGateway {
-        findAll(transactionId: string): Promise<TransactionLineItemResponse[]>;
+        findAll(transactionId: string): Promise<ReadonlyDeep<TransactionLineItemResponse[]>>;
     }
 
     /**
@@ -175,14 +176,14 @@ declare module 'braintree' {
      * Add-On
      */
 
-    export interface AddOn {
+    interface AddOn {
         amount?: string;
         neverExpires?: boolean;
         numberOfBillingCycles?: number;
         quantity?: number;
     }
 
-    export interface AddOnRequest extends AddOn {}
+    interface AddOnRequest extends AddOn {}
 
     export interface AddOnAddRequest extends AddOnRequest {
         inheritedFromId: string;
@@ -252,14 +253,14 @@ declare module 'braintree' {
      * Credit Card
      */
 
-    export interface CreditCard extends PaymentMethod {
+    interface CreditCard extends PaymentMethod {
         cardholderName?: string;
         expirationDate?: string;
         expirationMonth?: string;
         expirationYear?: string;
     }
 
-    export interface CreditCardRequest extends CreditCard {
+    interface CreditCardRequest extends CreditCard {
         cvv?: string;
         number?: string;
     }
@@ -283,7 +284,7 @@ declare module 'braintree' {
         billingAddress?: Address & { options?: { updateExisting?: boolean }};
     }
 
-    export interface CreditCardCoreResponse extends CreditCard {
+    interface CreditCardCoreResponse extends CreditCard {
         bin: string;
         cardType: string;
         commercial: Commercial;
@@ -302,23 +303,23 @@ declare module 'braintree' {
     }
 
     export interface CreditCardResponse extends CreditCardCoreResponse {
-        billingAddress: AddressResponse;
+        billingAddress?: AddressResponse;
         createdAt: Date;
         customerId: string;
         default: boolean;
         expired: boolean;
         imageUrl: string;
         maskedNumber: string;
-        subscriptions: SubscriptionResponse[];
+        subscriptions?: SubscriptionResponse[];
         updatedAt: Date;
-        verification: CreditCardVerificationResponse;
+        verification?: CreditCardVerificationResponse;
     }
 
     /**
      * Credit Card Verification
      */
 
-    export interface CreditCardVerification {
+    interface CreditCardVerification {
         amount: string;
         avsErrorResponseCode?: string;
         avsPostalCodeResponseCode?: string;
@@ -334,7 +335,7 @@ declare module 'braintree' {
         processorResponseCode: string;
         processorResponseText: string;
         processorResponseType: string;
-        riskData: TransactionRiskData;
+        riskData?: TransactionRiskData;
         status: string;
     }
 
@@ -344,7 +345,7 @@ declare module 'braintree' {
      * Customer
      */
 
-    export interface Customer {
+    interface Customer {
         company?: string;
         customFields?: any; //A collection of custom field/value pairs
         email?: string;
@@ -356,7 +357,7 @@ declare module 'braintree' {
         website?: string;
     }
 
-    export interface CustomerRequest extends Customer {
+    interface CustomerRequest extends Customer {
         deviceData?: string;
         paymentMethodNonce?: string;
         riskData?: CustomerRiskData;
@@ -372,18 +373,18 @@ declare module 'braintree' {
     }
 
     export interface CustomerResponse extends Customer {
-        addresses: AddressResponse[];
-        androidPayCards: AndroidPayCardResponse[];
-        applePayCards: ApplePayCardResponse[];
+        addresses?: AddressResponse[];
+        androidPayCards?: AndroidPayCardResponse[];
+        applePayCards?: ApplePayCardResponse[];
         createdAt: Date;
-        creditCards: CreditCardResponse[];
-        masterpassCards: MasterpassCardResponse[];
-        paymentMethods: PaymentMethodResponse[];
-        paypalAccounts: PayPalAccountResponse[];
-        samsungPayCards: SamsungPayCardResponse[];
+        creditCards?: CreditCardResponse[];
+        masterpassCards?: MasterpassCardResponse[];
+        paymentMethods?: PaymentMethodResponse[];
+        paypalAccounts?: PayPalAccountResponse[];
+        samsungPayCards?: SamsungPayCardResponse[];
         updatedAt: Date;
-        venmoAccounts: VenmoAccountResponse[];
-        visaCheckoutCards: VisaCheckoutCardResponse[];
+        venmoAccounts?: VenmoAccountResponse[];
+        visaCheckoutCards?: VisaCheckoutCardResponse[];
     }
 
     export interface CustomerRiskData {
@@ -395,14 +396,14 @@ declare module 'braintree' {
      * Discount
      */
 
-    export interface Discount {
+    interface Discount {
         amount?: string;
         neverExpires?: boolean;
         numberOfBillingCycles?: number;
         quantity?: number;
     }
 
-    export interface DiscountRequest extends Discount {}
+    interface DiscountRequest extends Discount {}
 
     export interface DiscountAddRequest extends DiscountRequest {
         inheritedFromId: string;
@@ -424,7 +425,7 @@ declare module 'braintree' {
      * Dispute
      */
 
-    export interface Dispute {
+    interface Dispute {
         amountDisputed: string;
         amountWon: string;
         caseNumber: string;
@@ -474,18 +475,18 @@ declare module 'braintree' {
     }
 
     export interface Evidence {
-        comment: string;
+        comment?: string;
         createdAt: Date;
         id: string;
         sendToProcessorAt: Date;
-        url: string;
+        url?: string;
     }
 
     /**
      * Merchant Account
      */
 
-    export interface MerchantAccount {
+    interface MerchantAccount {
         business?: MerchantBusiness;
         funding: MerchantFunding;
         id: string;
@@ -493,13 +494,15 @@ declare module 'braintree' {
         status: MerchantAccountStatus;
     }
 
-    export interface MerchantAccountRequest extends MerchantAccount {
+    interface MerchantAccountRequest extends MerchantAccount {
         masterMerchantAccountId: string;
     }
 
     export interface MerchantAccountCreateRequest extends MerchantAccountRequest {
         tosAccepted: boolean;
     }
+
+    export interface MerchantAccountUpdateRequest extends MerchantAccountRequest {}
 
     export interface MerchantAccountResponse extends MerchantAccount {
         currencyIsoCode: string;
@@ -553,9 +556,9 @@ declare module 'braintree' {
      * Payment Method
      */
 
-    export interface PaymentMethod {}
+    interface PaymentMethod {}
 
-    export interface PaymentMethodRequest extends PaymentMethod {
+    interface PaymentMethodRequest extends PaymentMethod {
         billingAddressId?: string;
         cardholderName?: string;
         cvv?: string;
@@ -589,14 +592,14 @@ declare module 'braintree' {
         };
     }
 
-    // Payment method response is an instace of one of these response types
+    // Payment method response is an instance of one of these response types
     type PaymentMethodResponse = AndroidPayCardResponse | ApplePayCardResponse | PayPalAccountResponse | CreditCardResponse | SamsungPayCardResponse | VenmoAccountResponse | VisaCheckoutCardResponse | MasterpassCardResponse;
 
     /**
      * Payment Method Nonce
      */
 
-    export interface PaymentMethodNonce {
+    interface PaymentMethodNonce {
         binData?: BinData;
         default?: boolean;
         details?: NonceDetails;
@@ -641,8 +644,8 @@ declare module 'braintree' {
      * Plan
      */
 
-    export interface Plan {
-        addOns: AddOnResponse[];
+    interface Plan {
+        addOns?: AddOnResponse[];
         billingDayOfMonth: number;
         billingFrequency: number;
         createdAt: Date;
@@ -653,9 +656,9 @@ declare module 'braintree' {
         name: string;
         numberOfBillingCycles: number;
         price: string;
-        trialDuration: number;
-        trialDurationUnit: string;
-        trialPeriod: boolean;
+        trialDuration?: number;
+        trialDurationUnit?: string;
+        trialPeriod?: boolean;
         updatedAt: Date;
     }
 
@@ -665,7 +668,7 @@ declare module 'braintree' {
      * Settlement Batch Summary
      */
 
-    export interface SettlementBatchSummary {
+    interface SettlementBatchSummary {
         records: Record<string, any>[];
     }
 
@@ -675,7 +678,7 @@ declare module 'braintree' {
      * Subscription
      */
 
-    export interface Subscription {
+    interface Subscription {
         billingDayOfMonth?: number;
         descriptor?: Descriptor;
         firstBillingDate?: Date;
@@ -692,21 +695,21 @@ declare module 'braintree' {
     }
 
     export interface SubscriptionResponse extends Subscription {
-        addOns: AddOnResponse[];
+        addOns?: AddOnResponse[];
         balance: string;
         billingPeriodEndDate: Date;
         billingPeriodStartDate: Date;
         currentBillingCycle: number;
-        daysPastDue: number;
-        discounts: DiscountResponse[]
-        failureCount: number;
+        daysPastDue?: number;
+        discounts?: DiscountResponse[]
+        failureCount?: number;
         nextBillAmount: string;
         nextBillingDate: Date;
         nextBillingPeriodAmount: string;
         paidThroughDate: Date;
         status: SubscriptionStatus;
-        statusHistory: SubscriptionHistory[];
-        transactions: Transaction[];
+        statusHistory?: SubscriptionHistory[];
+        transactions?: TransactionResponse[];
         createdAt: Date;
         updatedAt: Date;
     }
@@ -758,14 +761,14 @@ declare module 'braintree' {
      * Transaction
      */
 
-    export interface Transaction {
+    interface Transaction {
         amount: string;
         channel?: string;
         customFields?: Record<string, any>;
         customer?: Customer;
         descriptor?: Descriptor;
         discountAmount?: string;
-        lineItems: TransactionLineItem[];
+        lineItems?: TransactionLineItemResponse[];
         merchantAccountId?: string;
         orderId?: string;
         purchaseOrderNumber?: string;
@@ -829,9 +832,9 @@ declare module 'braintree' {
     }
 
     export interface TransactionResponse extends Transaction {
-        addOns: AddOnResponse[];
+        addOns?: AddOnResponse[];
         additionalProccessorResponse: string;
-        androidPayCard: AndroidPayCard & {
+        androidPayCard?: AndroidPayCard & {
             commercial: Commercial
             countryOfIssuance: string;
             debit: Debit;
@@ -841,7 +844,7 @@ declare module 'braintree' {
             prepaid: Prepaid;
             productId: string;
         };
-        applePayCard: ApplePayCard & {
+        applePayCard?: ApplePayCard & {
             commercial: Commercial
             countryOfIssuance: string;
             debit: Debit;
@@ -852,28 +855,29 @@ declare module 'braintree' {
             prepaid: Prepaid;
             productId: string;
         };
-        authorizationAdjustments: AuthorizationAdjustment[];
-        authorizationExpiresAt: Date;
+        authorizationAdjustments?: AuthorizationAdjustment[];
+        authorizationExpiresAt?: Date;
         avsErrorResponseCode: string;
         avsPostalCodeResponseCode: string;
         avsStreetAddressResponseCode: string;
-        billing: Address & {id?: string};
+        billing?: Address & {id?: string};
+        createdAt: Date;
         creditCard?: CreditCardCoreResponse & {imageUrl?: string, maskedNumber?: string};
         currencyIsoCode: string;
         cvvResponseCode: string;
         disbursementDetails?: DisbursementDetails;
-        discountAmount: string;
-        discounts: DiscountResponse[];
-        disputes: DisputeResponse[];
-        escrowStatus: EscrowStatus;
-        facilitatedDetails: FacilitatedDetails;
-        facilitatorDetails: FacilitatorDetails;
-        gatewayRejectionReason: GatewayRejectionReason;
+        discountAmount?: string;
+        discounts?: DiscountResponse[];
+        disputes?: DisputeResponse[];
+        escrowStatus?: EscrowStatus;
+        facilitatedDetails?: FacilitatedDetails;
+        facilitatorDetails?: FacilitatorDetails;
+        gatewayRejectionReason?: GatewayRejectionReason;
         id: string;
-        masterpassCardDetails: MasterpassCard;
-        networkTransactionId: string;
+        masterpassCardDetails?: MasterpassCard;
+        networkTransactionId?: string;
         paymentInstrumentType: PaymentInstrumentType;
-        paypalAccount: PayPalAccount & {
+        paypalAccount?: PayPalAccount & {
             authorizationId: string;
             captureId: string;
             customField: string;
@@ -891,33 +895,32 @@ declare module 'braintree' {
             transactionFeeAmount: string;
             transactionFeeCurrencyIsoCode: string;
         };
-        planId: string;
+        planId?: string;
         processorAuthorizationCode: string;
         processorResponseCode: string;
         processorResponseText: string;
         processorResponseType: TransactionProcessorResponseType;
         processorSettlementResponseCode: string;
         processorSettlementResponseText: string;
-        refundIds: string[];
-        refundedTransactionId: string;
-        riskData: TransactionRiskData;
-        samsungPayCardDetails: SamsungPayCard;
-        settlementBatchId: string;
-        shipping: Address & {id?: string};
+        refundIds?: string[];
+        refundedTransactionId?: string;
+        riskData?: TransactionRiskData;
+        samsungPayCardDetails?: SamsungPayCard;
+        settlementBatchId?: string;
+        shipping?: Address & {id?: string};
         status: TransactionStatus;
-        statusHistory: TransactionStatusHistory;
-        subscription: {
+        statusHistory?: TransactionStatusHistory;
+        subscription?: {
             billingPeriodEndDate: Date;
             billingPeriodStartDate: Date;
         }
-        subscriptionId: string;
-        threeDSecureInfo: TransactionThreeDSecureInfo;
+        subscriptionId?: string;
+        threeDSecureInfo?: TransactionThreeDSecureInfo;
         type: string;
-        venmoAccount: VenmoAccount;
-        visaCheckoutCardDetails: VisaCheckoutCard;
-        voiceReferralNumber: string;
-        createdAt: Date;
         updatedAt: Date;
+        venmoAccount?: VenmoAccount;
+        visaCheckoutCardDetails?: VisaCheckoutCard;
+        voiceReferralNumber?: string;
     }
 
     export interface AuthorizationAdjustment {
@@ -1040,7 +1043,7 @@ declare module 'braintree' {
      * Transaction Line Item
      */
 
-    export interface TransactionLineItem {
+    interface TransactionLineItem {
         commodityCode?: string;
         description?: string;
         discountAmount?: string;
@@ -1067,7 +1070,7 @@ declare module 'braintree' {
      * Android Pay Card
      */
 
-    export interface AndroidPayCard extends PaymentMethod {
+    interface AndroidPayCard extends PaymentMethod {
         bin: string;
         expirationMonth: string;
         expirationYear: string;
@@ -1085,7 +1088,7 @@ declare module 'braintree' {
         createdAt: Date;
         customerId: string;
         default: boolean;
-        subscriptions: Subscription[];
+        subscriptions?: SubscriptionResponse[];
         updatedAt: Date;
     }
 
@@ -1093,7 +1096,7 @@ declare module 'braintree' {
      * Apple Pay Card
      */
 
-    export interface ApplePayCard extends PaymentMethod {
+    interface ApplePayCard extends PaymentMethod {
         bin: string;
         cardType: string;
         cardholderName: string;
@@ -1111,7 +1114,7 @@ declare module 'braintree' {
         customerId: string;
         default: boolean;
         expired: boolean;
-        subscriptions: Subscription[];
+        subscriptions?: SubscriptionResponse[];
         updatedAt: Date;
     }
 
@@ -1119,7 +1122,7 @@ declare module 'braintree' {
      * Masterpass Card
      */
 
-    export interface MasterpassCard extends PaymentMethod {
+    interface MasterpassCard extends PaymentMethod {
         bin: string;
         cardType: string;
         cardholderName: string;
@@ -1147,7 +1150,7 @@ declare module 'braintree' {
         billingAddress: AddressResponse;
         createdAt: Date;
         expired: boolean;
-        subscriptions: Subscription[];
+        subscriptions?: SubscriptionResponse[];
         uniqueNumberIdentifier: string;
         updatedAt: Date;
     }
@@ -1156,7 +1159,7 @@ declare module 'braintree' {
      * PayPal Account
      */
 
-    export interface PayPalAccount extends PaymentMethod {
+    interface PayPalAccount extends PaymentMethod {
         imageUrl: string;
         payerId: string;
         token: string;
@@ -1169,7 +1172,7 @@ declare module 'braintree' {
         default: boolean;
         email: string;
         revokedAt: string;
-        subscriptions: Subscription[];
+        subscriptions?: SubscriptionResponse[];
         updatedAt: Date;
     }
 
@@ -1177,7 +1180,7 @@ declare module 'braintree' {
      * Samsung Pay Card
      */
 
-    export interface SamsungPayCard extends PaymentMethod {
+    interface SamsungPayCard extends PaymentMethod {
         bin: string;
         cardType: string;
         cardholderName: string;
@@ -1206,7 +1209,7 @@ declare module 'braintree' {
         createdAt: Date;
         customerId: string;
         expired: boolean;
-        subscriptions: Subscription[];
+        subscriptions?: SubscriptionResponse[];
         uniqueNumberIdentifier: string;
         updatedAt: Date;
     }
@@ -1215,7 +1218,7 @@ declare module 'braintree' {
      * Venmo Account
      */
 
-    export interface VenmoAccount extends PaymentMethod {
+    interface VenmoAccount extends PaymentMethod {
         imageUrl: string;
         sourceDescription: string;
         token: string;
@@ -1227,7 +1230,7 @@ declare module 'braintree' {
         createdAt: Date;
         customerId: string;
         default: boolean;
-        subscriptions: Subscription[];
+        subscriptions?: SubscriptionResponse[];
         updatedAt: Date;
     }
 
@@ -1235,7 +1238,7 @@ declare module 'braintree' {
      * Visa Checkout Card
      */
 
-    export interface VisaCheckoutCard extends PaymentMethod {
+    interface VisaCheckoutCard extends PaymentMethod {
         bin: string;
         callId: string;
         cardType: string;
@@ -1265,7 +1268,7 @@ declare module 'braintree' {
         customerId: string;
         default: boolean;
         expired: boolean;
-        subscriptions: Subscription[];
+        subscriptions?: SubscriptionResponse[];
         uniqueNumberIdentifier: string;
         updatedAt: Date;
     }
