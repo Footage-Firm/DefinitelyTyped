@@ -45,13 +45,17 @@ declare module 'braintree' {
         transactionLineItem: TransactionLineItemGateway;
     }
 
-    interface ValidatedResponse<T> {
-        [propName: string]: T; // Making propName generic for now.
+    type Entity = 'address' | 'creditCard' | 'customer' | 'dispute' | 'merchantAccount' | 'paymentMethod' | 'settlementBatchSummary' | 'subscription' | 'transaction';
+
+    type ValidatedResponse<T> = {
+        [key in Entity]: T;
+    } & {
         success: boolean;
         errors: () => string[];
         message: string;
-        params: any;
+        params: Record<string, any>;
     }
+
 
     /**
      * Gateways
@@ -504,7 +508,8 @@ declare module 'braintree' {
     }
 
     export interface MerchantBusiness {
-        [propName: "address" | "addressDetails"]: MerchantAddressDetails;
+        address?: MerchantAddressDetails;
+        addressDetails?: MerchantAddressDetails;
         dbaName?: string;
         legalName?: string;
         taxId?:string;
@@ -518,7 +523,8 @@ declare module 'braintree' {
     }
 
     export interface MerchantFunding {
-        [propName: "accountNumber" | "accountNumberLast4"]: string;
+        accountNumber?: string;
+        accountNumberLast4?: string;
         descriptor?: string;
         destination: string;
         email?: string;
@@ -533,7 +539,8 @@ declare module 'braintree' {
         firstName: string;
         lastName: string;
         phone?: string;
-        [propName: "ssn" | "ssnLast4"]: string;
+        ssn?: string;
+        ssnLast4?: string;
     }
 
     export enum MerchantAccountStatus {
