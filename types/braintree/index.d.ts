@@ -1,12 +1,11 @@
-// Type definitions for braintree
+// Type definitions for braintree 2.16
 // Project: https://github.com/braintree/braintree_node
 // Definitions by: Sam Rubin <https://github.com/smrubin>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-import { ReadonlyDeep} from "type-fest";
+import { ReadonlyDeep } from "type-fest";
 
-declare module 'braintree' {
-
+declare namespace braintree {
     /**
      * Braintree Config and Client
      */
@@ -56,7 +55,7 @@ declare module 'braintree' {
         errors: () => ReadonlyArray<string[]>;
         readonly message: string;
         params: ReadonlyDeep<Record<string, any>>;
-    }
+    };
 
     /**
      * Gateways
@@ -177,7 +176,7 @@ declare module 'braintree' {
     }
 
     /**
-     * Interfaces for Request and Response Objects
+     * Request and Response Objects
      */
 
     /**
@@ -191,13 +190,11 @@ declare module 'braintree' {
         quantity?: number;
     }
 
-    interface AddOnRequest extends AddOn {}
-
-    export interface AddOnAddRequest extends AddOnRequest {
+    export interface AddOnAddRequest extends AddOn {
         inheritedFromId: string;
     }
 
-    export interface AddOnUpdateRequest extends AddOnRequest {
+    export interface AddOnUpdateRequest extends AddOn {
         existingId: string;
     }
 
@@ -253,7 +250,7 @@ declare module 'braintree' {
             failOnDuplicatePaymentMethod?: boolean;
             makeDefault?: boolean;
             verifyCard?: boolean;
-        }
+        };
         version?: string;
     }
 
@@ -261,7 +258,7 @@ declare module 'braintree' {
      * Credit Card
      */
 
-    interface CreditCard extends PaymentMethod {
+    interface CreditCard {
         cardholderName?: string;
         expirationDate?: string;
         expirationMonth?: string;
@@ -283,7 +280,7 @@ declare module 'braintree' {
             verificationAmount?: string;
             verificationMerchantAccountId?: string;
             verifyCard?: boolean;
-        }
+        };
         paymentMethodNonce?: string;
         token?: string;
     }
@@ -355,7 +352,7 @@ declare module 'braintree' {
 
     interface Customer {
         company?: string;
-        customFields?: any; //A collection of custom field/value pairs
+        customFields?: any; // A collection of custom field/value pairs
         email?: string;
         fax?: string;
         firstName?: string;
@@ -411,13 +408,11 @@ declare module 'braintree' {
         quantity?: number;
     }
 
-    interface DiscountRequest extends Discount {}
-
-    export interface DiscountAddRequest extends DiscountRequest {
+    export interface DiscountAddRequest extends Discount {
         inheritedFromId: string;
     }
 
-    export interface DiscountUpdateRequest extends DiscountRequest {
+    export interface DiscountUpdateRequest extends Discount {
         existingId: string;
     }
 
@@ -433,7 +428,7 @@ declare module 'braintree' {
      * Dispute
      */
 
-    interface Dispute {
+    export interface DisputeResponse {
         amountDisputed: string;
         amountWon: string;
         caseNumber: string;
@@ -460,11 +455,9 @@ declare module 'braintree' {
             orderId: string;
             paymentInstrumentSubtype: string;
             purchaseOrderNumber: string;
-        }
+        };
         updatedAt: Date;
     }
-
-    export interface DisputeResponse extends Dispute {}
 
     export enum DisputeStatus {
         Accepted,
@@ -502,15 +495,14 @@ declare module 'braintree' {
         status: MerchantAccountStatus;
     }
 
-    interface MerchantAccountRequest extends MerchantAccount {
+    export interface MerchantAccountCreateRequest {
         masterMerchantAccountId: string;
-    }
-
-    export interface MerchantAccountCreateRequest extends MerchantAccountRequest {
         tosAccepted: boolean;
     }
 
-    export interface MerchantAccountUpdateRequest extends MerchantAccountRequest {}
+    export interface MerchantAccountUpdateRequest {
+        masterMerchantAccountId: string;
+    }
 
     export interface MerchantAccountResponse extends MerchantAccount {
         currencyIsoCode: string;
@@ -523,7 +515,7 @@ declare module 'braintree' {
         addressDetails?: MerchantAddressDetails;
         dbaName?: string;
         legalName?: string;
-        taxId?:string;
+        taxId?: string;
     }
 
     export interface MerchantAddressDetails {
@@ -566,7 +558,7 @@ declare module 'braintree' {
 
     interface PaymentMethod {}
 
-    interface PaymentMethodRequest extends PaymentMethod {
+    interface PaymentMethodRequest {
         billingAddressId?: string;
         cardholderName?: string;
         cvv?: string;
@@ -578,7 +570,7 @@ declare module 'braintree' {
         paymentMethodNonce: string;
     }
 
-    export interface PaymentMethodCreateRequest extends PaymentMethodRequest {
+    export interface PaymentMethodCreateRequest {
         billingAddress?: Address;
         customerId: string;
         options?: {
@@ -590,7 +582,7 @@ declare module 'braintree' {
         };
     }
 
-    export interface PaymentMethodUpdateRequest extends PaymentMethodRequest {
+    export interface PaymentMethodUpdateRequest {
         billingAddress?: Address & { options?: { updateExisting?: boolean }};
         options?: {
             makeDefault?: boolean;
@@ -601,13 +593,14 @@ declare module 'braintree' {
     }
 
     // Payment method response is an instance of one of these response types
-    type PaymentMethodResponse = AndroidPayCardResponse | ApplePayCardResponse | PayPalAccountResponse | CreditCardResponse | SamsungPayCardResponse | VenmoAccountResponse | VisaCheckoutCardResponse | MasterpassCardResponse;
+    type PaymentMethodResponse = AndroidPayCardResponse | ApplePayCardResponse | PayPalAccountResponse | CreditCardResponse | SamsungPayCardResponse |
+        VenmoAccountResponse | VisaCheckoutCardResponse | MasterpassCardResponse;
 
     /**
      * Payment Method Nonce
      */
 
-    interface PaymentMethodNonce {
+    export interface PaymentMethodNonceResponse {
         binData?: BinData;
         default?: boolean;
         details?: NonceDetails;
@@ -615,8 +608,6 @@ declare module 'braintree' {
         threeDSecureInfo?: TransactionThreeDSecureInfo;
         type?: PaymentMethodType;
     }
-
-    export interface PaymentMethodNonceResponse extends PaymentMethodNonce {}
 
     export interface BinData {
         commercial?: Commercial;
@@ -676,11 +667,9 @@ declare module 'braintree' {
      * Settlement Batch Summary
      */
 
-    interface SettlementBatchSummary {
-        records: Record<string, any>[];
+    export interface SettlementBatchSummaryResponse {
+        records: Array<Record<string, any>>;
     }
-
-    export interface SettlementBatchSummaryResponse extends SettlementBatchSummary {}
 
     /**
      * Subscription
@@ -709,7 +698,7 @@ declare module 'braintree' {
         billingPeriodStartDate: Date;
         currentBillingCycle: number;
         daysPastDue?: number;
-        discounts?: DiscountResponse[]
+        discounts?: DiscountResponse[];
         failureCount?: number;
         nextBillAmount: string;
         nextBillingDate: Date;
@@ -799,7 +788,7 @@ declare module 'braintree' {
         externalVault?: {
             previousNetworkTransactionId?: string;
             status?: string;
-        }
+        };
         options?: {
             addBillingAddressToPaymentMethod?: boolean;
             holdInEscrow?: boolean;
@@ -820,7 +809,7 @@ declare module 'braintree' {
             venmo?: {
                 profileId?: string;
             }
-        }
+        };
         paymentMethodNonce?: string;
         paymentMethodToken?: string;
         riskData?: CustomerRiskData;
@@ -835,7 +824,7 @@ declare module 'braintree' {
             eciFlag: string;
             threeDSecureVision?: string;
             xid?: string;
-        }
+        };
         transactionSource?: string;
     }
 
@@ -921,7 +910,7 @@ declare module 'braintree' {
         subscription?: {
             billingPeriodEndDate: Date;
             billingPeriodStartDate: Date;
-        }
+        };
         subscriptionId?: string;
         threeDSecureInfo?: TransactionThreeDSecureInfo;
         type: string;
@@ -1069,7 +1058,6 @@ declare module 'braintree' {
 
     export interface TransactionLineItemResponse extends TransactionLineItem {}
 
-
     /**
      * Payment Method Sub-Classes
      */
@@ -1078,7 +1066,7 @@ declare module 'braintree' {
      * Android Pay Card
      */
 
-    interface AndroidPayCard extends PaymentMethod {
+    interface AndroidPayCard {
         bin: string;
         expirationMonth: string;
         expirationYear: string;
@@ -1104,7 +1092,7 @@ declare module 'braintree' {
      * Apple Pay Card
      */
 
-    interface ApplePayCard extends PaymentMethod {
+    interface ApplePayCard {
         bin: string;
         cardType: string;
         cardholderName: string;
@@ -1130,7 +1118,7 @@ declare module 'braintree' {
      * Masterpass Card
      */
 
-    interface MasterpassCard extends PaymentMethod {
+    interface MasterpassCard {
         bin: string;
         cardType: string;
         cardholderName: string;
@@ -1151,7 +1139,6 @@ declare module 'braintree' {
         prepaid: Prepaid;
         productId: string;
         token: string;
-
     }
 
     export interface MasterpassCardResponse extends MasterpassCard {
@@ -1167,7 +1154,7 @@ declare module 'braintree' {
      * PayPal Account
      */
 
-    interface PayPalAccount extends PaymentMethod {
+    interface PayPalAccount {
         imageUrl: string;
         payerId: string;
         token: string;
@@ -1188,7 +1175,7 @@ declare module 'braintree' {
      * Samsung Pay Card
      */
 
-    interface SamsungPayCard extends PaymentMethod {
+    interface SamsungPayCard {
         bin: string;
         cardType: string;
         cardholderName: string;
@@ -1226,7 +1213,7 @@ declare module 'braintree' {
      * Venmo Account
      */
 
-    interface VenmoAccount extends PaymentMethod {
+    interface VenmoAccount {
         imageUrl: string;
         sourceDescription: string;
         token: string;
@@ -1246,7 +1233,7 @@ declare module 'braintree' {
      * Visa Checkout Card
      */
 
-    interface VisaCheckoutCard extends PaymentMethod {
+    interface VisaCheckoutCard {
         bin: string;
         callId: string;
         cardType: string;
@@ -1453,3 +1440,6 @@ declare module 'braintree' {
         };
     }
 }
+
+export = braintree;
+export as namespace braintree;
