@@ -5,6 +5,9 @@
 
 import { ReadonlyDeep } from "type-fest";
 
+export = braintree;
+export as namespace braintree;
+
 declare namespace braintree {
     /**
      * Braintree Config and Client
@@ -1440,6 +1443,3 @@ declare namespace braintree {
         };
     }
 }
-
-export = braintree;
-export as namespace braintree;
