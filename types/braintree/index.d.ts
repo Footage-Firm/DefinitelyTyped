@@ -559,8 +559,6 @@ declare namespace braintree {
      * Payment Method
      */
 
-    interface PaymentMethod {}
-
     interface PaymentMethodRequest {
         billingAddressId?: string;
         cardholderName?: string;
@@ -573,7 +571,7 @@ declare namespace braintree {
         paymentMethodNonce: string;
     }
 
-    export interface PaymentMethodCreateRequest {
+    export interface PaymentMethodCreateRequest extends PaymentMethodRequest {
         billingAddress?: Address;
         customerId: string;
         options?: {
@@ -585,7 +583,7 @@ declare namespace braintree {
         };
     }
 
-    export interface PaymentMethodUpdateRequest {
+    export interface PaymentMethodUpdateRequest extends PaymentMethodRequest {
         billingAddress?: Address & { options?: { updateExisting?: boolean }};
         options?: {
             makeDefault?: boolean;
