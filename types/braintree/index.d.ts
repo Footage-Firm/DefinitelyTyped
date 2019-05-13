@@ -25,9 +25,9 @@ declare module 'braintree' {
 
     export class BraintreeGateway {
         constructor(config: Config);
-
         config: any;
-        testing: any;
+        Test: Test;
+        testing: TestingGateway;
 
         addOn: AddOnGateway;
         address: AddressGateway;
@@ -61,6 +61,14 @@ declare module 'braintree' {
     /**
      * Gateways
      */
+
+    export class TestingGateway {
+        settle(transactionId: string): Promise<ValidatedResponse<TransactionResponse>>;
+        settlementConfirm(transactionId: string): Promise<ValidatedResponse<TransactionResponse>>;
+        settlementDecline(transactionId: string): Promise<ValidatedResponse<TransactionResponse>>;
+        settlementOperationWithEnvironmentCheck(transactionId: string): Promise<ValidatedResponse<TransactionResponse>>;
+        settlementPending(transactionId: string): Promise<ValidatedResponse<TransactionResponse>>;
+    }
 
     export class AddOnGateway {
         all(): Promise<AddOnResponse[]>;
@@ -1316,5 +1324,132 @@ declare module 'braintree' {
         Yes,
         No,
         Unknown,
+    }
+
+    /**
+     * Errors
+     */
+
+    export interface AuthenticationError extends Error {}
+    export interface AuthorizationError extends Error {}
+    export interface DownForMaintenanceError extends Error {}
+    export interface InvalidChallengeError extends Error {}
+    export interface InvalidKeysError extends Error {}
+    export interface InvalidSignatureError extends Error {}
+    export interface InvalidTransparentRedirectHashError extends Error {}
+    export interface NotFoundError extends Error {}
+    export interface ServerError extends Error {}
+    export interface TestOperationPerformedInProductionError extends Error {}
+    export interface TooManyRequestsError extends Error {}
+    export interface UnexpectedError extends Error {}
+    export interface UpgradeRequired extends Error {}
+
+    /**
+     * Test
+     */
+
+    interface Test {
+        CreditCardDefaults: {
+            CountryOfIssuance: string;
+            IssuingBank: string;
+        };
+        CreditCardNumbers: {
+            AmexPayWithPoints: {
+                IneligibleCard: string;
+                InsufficientPoints: string;
+                Success: string;
+            };
+            CardTypeIndicators: {
+                Commercial: string;
+                CountryOfIssuance: string;
+                Debit: string;
+                DurbinRegulated: string;
+                Fraud: string;
+                Healthcare: string;
+                Hiper: string;
+                HiperCard: string;
+                IssuingBank: string;
+                No: string;
+                Payroll: string;
+                Prepaid: string;
+                Unknown: string;
+            };
+            Dispute: {
+                Chargeback: string;
+            };
+        };
+        MerchantAccountTest: {
+            AccountNotAuthorizedContactUs: string;
+            AnotherUsBankMerchantAccount: string;
+            Approve: string;
+            BankRejectedNone: string;
+            BankRejectedUpdateFundingInformation: string;
+            InsufficientFundsContactUs: string;
+            UsBankMerchantAccount: string;
+        };
+        Nonces: {
+            AbstractTransactable: string;
+            AmexExpressCheckout: string;
+            AndroidPay: string;
+            AndroidPayAmEx: string;
+            AndroidPayDiscover: string;
+            AndroidPayMasterCard: string;
+            AndroidPayVisa: string;
+            ApplePayAmEx: string;
+            ApplePayMasterCard: string;
+            ApplePayVisa: string;
+            Coinbase: string;
+            Consumed: string;
+            Europe: string;
+            GatewayRejectedFraud: string;
+            LuhnInvalid: string;
+            MasterpassAmEx: string;
+            MasterpassDiscover: string;
+            MasterpassMasterCard: string;
+            MasterpassVisa: string;
+            PayPalBillingAgreement: string;
+            PayPalFuturePayment: string;
+            PayPalFuturePaymentRefreshToken: string;
+            PayPalOneTimePayment: string;
+            ProcessorDeclinedAmEx: string;
+            ProcessorDeclinedDiscover: string;
+            ProcessorDeclinedMasterCard: string;
+            ProcessorDeclinedVisa: string;
+            ProcessorFailureJCB: string;
+            SEPA: string;
+            SamsungPayAmEx: string;
+            SamsungPayDiscover: string;
+            SamsungPayMasterCard: string;
+            SamsungPayVisa: string;
+            Transactable: string;
+            TransactableAmEx: string;
+            TransactableCommercial: string;
+            TransactableCountryOfIssuanceCAD: string;
+            TransactableCountryOfIssuanceUSA: string;
+            TransactableDebit: string;
+            TransactableDinersClub: string;
+            TransactableDiscover: string;
+            TransactableDurbinRegulated: string;
+            TransactableHealthcare: string;
+            TransactableIssuingBankNetworkOnly: string;
+            TransactableJCB: string;
+            TransactableMaestro: string;
+            TransactableMasterCard: string;
+            TransactableNoIndicators: string;
+            TransactablePayroll: string;
+            TransactablePrepaid: string;
+            TransactableUnknownIndicators: string;
+            TransactableVisa: string;
+            VenmoAccount: string;
+            VisaCheckoutAmEx: string;
+            VisaCheckoutDiscover: string;
+            VisaCheckoutMasterCard: string;
+            VisaCheckoutVisa: string;
+        };
+        TransactionAmounts: {
+            Authorize: string;
+            Decline: string;
+            Fail: string;
+        };
     }
 }
