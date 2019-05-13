@@ -1043,7 +1043,7 @@ declare namespace braintree {
      * Transaction Line Item
      */
 
-    interface TransactionLineItem {
+    export interface TransactionLineItemResponse {
         commodityCode?: string;
         description?: string;
         discountAmount?: string;
@@ -1058,8 +1058,6 @@ declare namespace braintree {
         unitTaxAmount?: string;
         url?: string;
     }
-
-    export interface TransactionLineItemResponse extends TransactionLineItem {}
 
     /**
      * Payment Method Sub-Classes
