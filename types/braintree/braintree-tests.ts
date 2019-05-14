@@ -1,5 +1,5 @@
 import braintree = require('braintree');
-import { BraintreeGateway, Environment, Address, AddressCreateRequest,
+import { BraintreeGateway, Address, AddressCreateRequest,
     CreditCard, Customer, PayPalAccount, ApplePayCard, AndroidPayCard,
     VisaCheckoutCard, SamsungPayCard, MasterpassCard, PaymentMethod, Transaction
 } from 'braintree';
@@ -8,7 +8,7 @@ import { BraintreeGateway, Environment, Address, AddressCreateRequest,
  * Gateway
  */
 const gateway: BraintreeGateway = new braintree.BraintreeGateway({
-    environment: 'Production',
+    environment: new braintree.Environment('gateway.qa.braintreepayments.com', '443', 'https://auth.venmo.qa2.braintreegateway.com', true, 'payments-qa.dev.braintree-api.com', '443'),
     merchantId: 'abc123',
     publicKey: 'def456',
     privateKey: 'xyz789',

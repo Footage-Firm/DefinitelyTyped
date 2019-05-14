@@ -12,9 +12,7 @@ declare namespace braintree {
      * Braintree Config and Client
      */
 
-    export type Environment = 'Production' | 'Sandbox';
-
-    export interface Config {
+    export interface GatewayConfig {
         environment: Environment;
         merchantId: string;
         publicKey: string;
@@ -22,7 +20,8 @@ declare namespace braintree {
     }
 
     export class BraintreeGateway {
-        constructor(config: Config);
+        constructor(config: GatewayConfig);
+        config: any;
         addOn: AddOnGateway;
         address: AddressGateway;
         clientToken: ClientTokenGateway;
@@ -56,6 +55,17 @@ declare namespace braintree {
         settlementBatchSumary: T extends SettlementBatchSummary ? SettlementBatchSummary : never;
         subscription: T extends Subscription ? Subscription : never;
         transaction: T extends Transaction ? Transaction : never;
+    }
+
+    export class Environment {
+        constructor(server: string, port: string, authUrl: string, ssl: boolean, graphQLServer: string, graphQLPort: string);
+        baseUrl(): string;
+        baseGraphQLUrl(): string;
+        uriScheme(): string;
+        Devleopment: Environment;
+        Qa: Environment;
+        Sandbox: Environment;
+        Production: Environment;
     }
 
     /**
@@ -644,7 +654,6 @@ declare namespace braintree {
         expirationMonth?: string;
         expirationYear?: string;
         number?: string;
-        paymentMethodNonce: string;
     }
 
     export interface PaymentMethodCreateRequest extends PaymentMethodRequest {
@@ -670,6 +679,7 @@ declare namespace braintree {
             verificationMerchantAccountId?: string;
             verifyCard?: boolean;
         };
+        paymentMethodNonce: string;
     }
 
     export interface PaymentMethodUpdateRequest extends PaymentMethodRequest {
@@ -696,6 +706,7 @@ declare namespace braintree {
             verificationMerchantAccountId?: string;
             verifyCard?: boolean;
         };
+        paymentMethodNonce?: string;
     }
 
     /**
@@ -939,7 +950,7 @@ declare namespace braintree {
             uniqueNumberIdentifier: string;
         };
         currencyIsoCode: string;
-        customer?: {
+        customer: {
             company?: string;
             customFields?: any;
             email?: string;
@@ -1329,6 +1340,9 @@ declare namespace braintree {
 
     export interface AndroidPayCard {
         bin: string;
+        createdAt: Date;
+        customerId: string;
+        default: boolean;
         expirationMonth: string;
         expirationYear: string;
         googleTransactionId: string;
@@ -1336,14 +1350,11 @@ declare namespace braintree {
         sourceCardLast4: string;
         sourceCardType: string;
         sourceDescription: string;
+        subscriptions?: Subscription[];
         token: string;
+        updatedAt: Date;
         virtualCardLast4: string;
         virtualCardType: string;
-        createdAt: Date;
-        customerId: string;
-        default: boolean;
-        subscriptions?: Subscription[];
-        updatedAt: Date;
     }
 
     /**
@@ -1354,17 +1365,17 @@ declare namespace braintree {
         bin: string;
         cardType: string;
         cardholderName: string;
+        createdAt: Date;
+        customerId: string;
+        default: boolean;
         expirationMonth: string;
         expirationYear: string;
+        expired: boolean;
         imageUrl: string;
         last4: string;
         paymentInsuranceName: string;
         sourceDescription: string;
         token: string;
-        createdAt: Date;
-        customerId: string;
-        default: boolean;
-        expired: boolean;
         subscriptions?: Subscription[];
         updatedAt: Date;
     }
@@ -1374,17 +1385,21 @@ declare namespace braintree {
      */
 
     export interface MasterpassCard {
+        billingAddress: Address;
         bin: string;
         cardType: string;
         cardholderName: string;
         commercial: Commercial;
         countryOfIssuance: string;
+        createdAt: Date;
+        customerId: string;
         customerLocation: CustomerLocation;
         debit: Debit;
         durbinRegulated: DurbinRegulated;
         expirationDate: string;
         expirationMonth: string;
         expirationYear: string;
+        expired: boolean;
         healthcare: HealthCare;
         imageUrl: string;
         issuingBank: string;
@@ -1394,9 +1409,6 @@ declare namespace braintree {
         prepaid: Prepaid;
         productId: string;
         token: string;
-        billingAddress: Address;
-        createdAt: Date;
-        expired: boolean;
         subscriptions?: Subscription[];
         uniqueNumberIdentifier: string;
         updatedAt: Date;
@@ -1425,17 +1437,21 @@ declare namespace braintree {
      */
 
     export interface SamsungPayCard {
+        billingAddress: Address;
         bin: string;
         cardType: string;
         cardholderName: string;
         commercial: Commercial;
         countryOfIssuance: string;
+        createdAt: Date;
+        customerId: string;
         customerLocation: CustomerLocation;
         debit: Debit;
         durbinRegulated: DurbinRegulated;
         expirationDate: string;
         expirationMonth: string;
         expirationYear: string;
+        expired: boolean;
         healthcare: HealthCare;
         imageUrl: string;
         issuingBank: string;
@@ -1445,12 +1461,8 @@ declare namespace braintree {
         prepaid: Prepaid;
         productId: string;
         sourceCardLast4: string;
-        token: string;
-        billingAddress: Address;
-        createdAt: Date;
-        customerId: string;
-        expired: boolean;
         subscriptions?: Subscription[];
+        token: string;
         uniqueNumberIdentifier: string;
         updatedAt: Date;
     }
@@ -1460,16 +1472,16 @@ declare namespace braintree {
      */
 
     export interface VenmoAccount {
-        imageUrl: string;
-        sourceDescription: string;
-        token: string;
-        username: string;
-        venmoUserId: string;
         createdAt: Date;
         customerId: string;
         default: boolean;
+        imageUrl: string;
+        sourceDescription: string;
         subscriptions?: Subscription[];
+        token: string;
+        username: string;
         updatedAt: Date;
+        venmoUserId: string;
     }
 
     /**
