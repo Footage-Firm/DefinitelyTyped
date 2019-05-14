@@ -18,7 +18,7 @@ declare namespace braintree {
         Sandbox
     }
 
-    interface Config {
+    export interface Config {
         environment: Environment;
         merchantId: string;
         publicKey: string;
@@ -644,7 +644,7 @@ declare namespace braintree {
      */
 
     // Payment method is an instance of one of these types
-    type PaymentMethod = AndroidPayCard | ApplePayCard | PayPalAccount | CreditCard | SamsungPayCard |
+    export type PaymentMethod = AndroidPayCard | ApplePayCard | PayPalAccount | CreditCard | SamsungPayCard |
         VenmoAccount | VisaCheckoutCard | MasterpassCard;
 
     interface PaymentMethodRequest {
