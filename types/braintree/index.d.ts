@@ -2,37 +2,12 @@
 // Project: https://github.com/braintree/braintree_node
 // Definitions by: Sam Rubin <https://github.com/smrubin>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// TypeScript Version: 3.2
+// TypeScript Version: 2.1
 
 export = braintree;
 export as namespace braintree;
 
 declare namespace braintree {
-    /**
-     * Helpers
-     */
-    type Primitive = null | undefined | string | number | boolean | symbol | bigint;
-
-    type ReadonlyDeep<T> = T extends Primitive | ((...arguments: any[]) => unknown)
-        ? T
-        : T extends ReadonlyMap<infer KeyType, infer ValueType>
-            ? ReadonlyMapDeep<KeyType, ValueType>
-            : T extends ReadonlySet<infer ItemType>
-                ? ReadonlySetDeep<ItemType>
-                : T extends object
-                    ? ReadonlyObjectDeep<T>
-                    : unknown;
-
-    interface ReadonlyMapDeep<KeyType, ValueType>
-        extends ReadonlyMap<ReadonlyDeep<KeyType>, ReadonlyDeep<ValueType>> {}
-
-    interface ReadonlySetDeep<ItemType>
-        extends ReadonlySet<ReadonlyDeep<ItemType>> {}
-
-    type ReadonlyObjectDeep<ObjectType extends object> = {
-        readonly [PropertyType in keyof ObjectType]: ReadonlyDeep<ObjectType[PropertyType]>
-    };
-
     /**
      * Braintree Config and Client
      */
@@ -73,12 +48,12 @@ declare namespace braintree {
     type Entity = 'address' | 'creditCard' | 'customer' | 'dispute' | 'merchantAccount' | 'paymentMethod' | 'settlementBatchSummary' | 'subscription' | 'transaction';
 
     type ValidatedResponse<T> = {
-        [key in Entity]: ReadonlyDeep<T>;
+        [key in Entity]: T;
     } & {
         readonly success: boolean;
         errors: () => ReadonlyArray<string[]>;
         readonly message: string;
-        params: ReadonlyDeep<Record<string, any>>;
+        params: Record<string, any>;
     };
 
     /**
@@ -92,7 +67,7 @@ declare namespace braintree {
     export class AddressGateway {
         create(request: AddressCreateRequest): Promise<ValidatedResponse<Address>>;
         delete(customerId: string, addressId: string): Promise<void>;
-        find(customerId: string, addressId: string): Promise<ReadonlyDeep<Address>>;
+        find(customerId: string, addressId: string): Promise<Address>;
         update(customerId: string, addressId: string, updates: AddressUpdateRequest): Promise<ValidatedResponse<Address>>;
     }
 
@@ -103,25 +78,25 @@ declare namespace braintree {
     export class CreditCardGateway {
         create(request: CreditCardCreateRequest): Promise<ValidatedResponse<CreditCard>>;
         delete(creditCardToken: string): Promise<void>;
-        expiringBetween(startDate: Date, endDate: Date): Promise<ReadonlyDeep<CreditCard>>;
-        find(creditCardToken: string): Promise<ReadonlyDeep<CreditCard>>;
+        expiringBetween(startDate: Date, endDate: Date): Promise<CreditCard>;
+        find(creditCardToken: string): Promise<CreditCard>;
         update(creditCardToken: string, updates: CreditCardUpdateRequest): Promise<ValidatedResponse<CreditCard>>;
     }
 
     export class CreditCardVerificationGateway {
-        search(searchFn: any): Promise<ReadonlyDeep<CreditCardVerification[]>>;
+        search(searchFn: any): Promise<CreditCardVerification[]>;
     }
 
     export class CustomerGateway {
         create(request: CustomerCreateRequest): Promise<ValidatedResponse<Customer>>;
         delete(customerId: string): Promise<void>;
-        find(customerId: string): Promise<ReadonlyDeep<Customer>>;
-        search(searchFn: any): Promise<ReadonlyDeep<Customer[]>>;
+        find(customerId: string): Promise<Customer>;
+        search(searchFn: any): Promise<Customer[]>;
         update(customerId: string, updates: CustomerUpdateRequest): Promise<ValidatedResponse<Customer>>;
     }
 
     export class DiscountGateway {
-        all(): Promise<ReadonlyDeep<Discount[]>>;
+        all(): Promise<Discount[]>;
     }
 
     export class DisputeGateway {
@@ -129,23 +104,23 @@ declare namespace braintree {
         addFileEvidence(disputeId: string, evidence: { documentId: string, category?: string }): Promise<ValidatedResponse<Evidence>>;
         addTextEvidence(disputeId: string, evidence: { content: string, category?: string}): Promise<ValidatedResponse<Evidence>>;
         finalize(disputeId: string): Promise<ValidatedResponse<Dispute>>;
-        find(disputeId: string): Promise<ReadonlyDeep<Dispute>>;
+        find(disputeId: string): Promise<Dispute>;
         removeEvidence(disputeId: string, evidenceId: string): Promise<ValidatedResponse<Dispute>>;
-        search(searchFn: any): Promise<ReadonlyDeep<Dispute[]>>;
+        search(searchFn: any): Promise<Dispute[]>;
     }
 
     export class MerchantAccountGateway {
-        all(): Promise<ReadonlyDeep<MerchantAccount[]>>;
+        all(): Promise<MerchantAccount[]>;
         create(request: MerchantAccountCreateRequest): Promise<ValidatedResponse<MerchantAccount>>;
         createForCurrency(currency: string, id?: string): Promise<ValidatedResponse<MerchantAccount>>;
         update(merchantAccountId: string, updates: MerchantAccountUpdateRequest): Promise<ValidatedResponse<MerchantAccount>>;
-        find(merchantAccountId: string): Promise<ReadonlyDeep<MerchantAccount>>;
+        find(merchantAccountId: string): Promise<MerchantAccount>;
     }
 
     export class PaymentMethodGateway {
         create(request: PaymentMethodCreateRequest): Promise<ValidatedResponse<PaymentMethod>>;
         delete(token: string): Promise<void>;
-        find(token: string): Promise<ReadonlyDeep<PaymentMethod>>;
+        find(token: string): Promise<PaymentMethod>;
         grant(sharedPaymentMethodToken: string, options: {allowVaulting?: boolean, includeBillingPostalCode?: boolean, revokeAfter?: Date }): Promise<Readonly<string>>;
         revoke(sharedPaymentMethodToken: string): Promise<void>;
         update(token: string, updates: PaymentMethodUpdateRequest): Promise<ValidatedResponse<PaymentMethod>>;
@@ -153,23 +128,23 @@ declare namespace braintree {
 
     export class PaymentMethodNonceGateway {
         create(paymentMethodToken: string): Promise<ValidatedResponse<PaymentMethodNonce>>;
-        find(paymentMethodNonce: string): Promise<ReadonlyDeep<PaymentMethodNonce>>;
+        find(paymentMethodNonce: string): Promise<PaymentMethodNonce>;
     }
 
     export class PlanGateway {
-        all(): Promise<ReadonlyDeep<Plan[]>>;
+        all(): Promise<Plan[]>;
     }
 
     export class SettlementBatchSummaryGateway {
-        generate(request: {settlementDate: string, groupByCustomField?: string}): Promise<ReadonlyDeep<SettlementBatchSummary>>;
+        generate(request: {settlementDate: string, groupByCustomField?: string}): Promise<SettlementBatchSummary>;
     }
 
     export class SubscriptionGateway {
         cancel(subscriptionId: string): Promise<void>;
         create(request: SubscriptionRequest): Promise<ValidatedResponse<Subscription>>;
-        find(subscriptionId: string): Promise<ReadonlyDeep<Subscription>>;
+        find(subscriptionId: string): Promise<Subscription>;
         retryCharge(subscriptionId: string, amount?: string, submitForSettlement?: boolean): Promise<ValidatedResponse<Subscription>>;
-        search(searchFn: any): Promise<ReadonlyDeep<Subscription[]>>;
+        search(searchFn: any): Promise<Subscription[]>;
         update(subscriptionId: string, updates: SubscriptionRequest): Promise<ValidatedResponse<Subscription>>;
     }
 
@@ -184,19 +159,19 @@ declare namespace braintree {
     export class TransactionGateway {
         cancelRelease(transactionId: string): Promise<void>;
         cloneTransaction(transactionId: string, options: {amount: string, options: {submitForSettlement: boolean}}): Promise<void>;
-        find(transactionId: string): Promise<ReadonlyDeep<Transaction>>;
-        holdInEscrow(transactionId: string): Promise<ReadonlyDeep<Transaction>>;
+        find(transactionId: string): Promise<Transaction>;
+        holdInEscrow(transactionId: string): Promise<Transaction>;
         refund(transactionId: string, amount?: string): Promise<ValidatedResponse<Transaction>>;
-        releaseFromEscrow(transactionId: string): Promise<ReadonlyDeep<Transaction>>;
+        releaseFromEscrow(transactionId: string): Promise<Transaction>;
         sale(request: TransactionRequest): Promise<ValidatedResponse<Transaction>>;
-        search(searchFn: any): Promise<ReadonlyDeep<Transaction[]>>;
+        search(searchFn: any): Promise<Transaction[]>;
         submitForPartialSettlement(authorizedTransactionId: string, amount: string): Promise<ValidatedResponse<Transaction>>;
         submitForSettlement(transactionId: string, amount?: string): Promise<ValidatedResponse<Transaction>>;
         void(transactionId: string): Promise<ValidatedResponse<Transaction>>;
     }
 
     export class TransactionLineItemGateway {
-        findAll(transactionId: string): Promise<ReadonlyDeep<TransactionLineItem[]>>;
+        findAll(transactionId: string): Promise<TransactionLineItem[]>;
     }
 
     /**
