@@ -206,19 +206,20 @@ declare namespace braintree {
         quantity?: number;
     }
 
-    interface AddOnRequest {
+    export interface AddOnAddRequest {
         amount?: string;
+        inheritedFromId: string;
         neverExpires?: boolean;
         numberOfBillingCycles?: number;
         quantity?: number;
     }
 
-    export interface AddOnAddRequest extends AddOnRequest {
-        inheritedFromId: string;
-    }
-
-    export interface AddOnUpdateRequest extends AddOnRequest {
+    export interface AddOnUpdateRequest {
+        amount?: string;
         existingId: string;
+        neverExpires?: boolean;
+        numberOfBillingCycles?: number;
+        quantity?: number;
     }
 
     /**
@@ -244,7 +245,23 @@ declare namespace braintree {
         updatedAt: Date;
     }
 
-    interface AddressRequest {
+    export interface AddressCreateRequest {
+        company?: string;
+        countryCodeAlpha2?: string;
+        countryCodeAlpha3?: string;
+        countryCodeNumeric?: string;
+        countryName?: string;
+        customerId: string;
+        extendedAddress?: string;
+        firstName?: string;
+        lastName?: string;
+        locality?: string;
+        postalCode?: string;
+        region?: string;
+        streetAddress?: string;
+    }
+
+    export interface AddressUpdateRequest {
         company?: string;
         countryCodeAlpha2?: string;
         countryCodeAlpha3?: string;
@@ -258,12 +275,6 @@ declare namespace braintree {
         region?: string;
         streetAddress?: string;
     }
-
-    export interface AddressCreateRequest extends AddressRequest {
-        customerId: string;
-    }
-
-    export interface AddressUpdateRequest extends AddressRequest {}
 
     /**
      * Client Token
@@ -458,8 +469,9 @@ declare namespace braintree {
         website?: string;
     }
 
-    interface CustomerRequest {
+    export interface CustomerCreateRequest {
         company?: string;
+        creditCard?: CreditCardCreateRequest;
         customFields?: any;
         deviceData?: string;
         email?: string;
@@ -472,13 +484,20 @@ declare namespace braintree {
         website?: string;
     }
 
-    export interface CustomerCreateRequest extends CustomerRequest {
-        creditCard?: CreditCardCreateRequest;
-    }
-
-    export interface CustomerUpdateRequest extends CustomerRequest {
+    export interface CustomerUpdateRequest {
+        company?: string;
         creditCard?: CreditCardUpdateRequest;
+        customFields?: any;
         defaultPaymentMethodToken?: string;
+        deviceData?: string;
+        email?: string;
+        fax?: string;
+        firstName?: string;
+        lastName?: string;
+        paymentMethodNonce?: string;
+        phone?: string;
+        riskData?: CustomerRiskData;
+        website?: string;
     }
 
     export interface CustomerRiskData {
@@ -502,19 +521,20 @@ declare namespace braintree {
         quantity?: number;
     }
 
-    interface DiscountRequest {
+    export interface DiscountAddRequest {
         amount?: string;
+        inheritedFromId: string;
         neverExpires?: boolean;
         numberOfBillingCycles?: number;
         quantity?: number;
     }
 
-    export interface DiscountAddRequest extends DiscountRequest {
-        inheritedFromId: string;
-    }
-
-    export interface DiscountUpdateRequest extends DiscountRequest {
+    export interface DiscountUpdateRequest {
+        amount?: string;
         existingId: string;
+        neverExpires?: boolean;
+        numberOfBillingCycles?: number;
+        quantity?: number;
     }
 
     /**
@@ -584,7 +604,17 @@ declare namespace braintree {
         status: MerchantAccountStatus;
     }
 
-    interface MerchantAccountRequest {
+    export interface MerchantAccountCreateRequest {
+        business?: MerchantBusiness;
+        funding: MerchantFunding;
+        id: string;
+        individual: MerchantIndividual;
+        masterMerchantAccountId: string;
+        status: MerchantAccountStatus;
+        tosAccepted: boolean;
+    }
+
+    export interface MerchantAccountUpdateRequest {
         business?: MerchantBusiness;
         funding: MerchantFunding;
         id: string;
@@ -592,12 +622,6 @@ declare namespace braintree {
         masterMerchantAccountId: string;
         status: MerchantAccountStatus;
     }
-
-    export interface MerchantAccountCreateRequest extends MerchantAccountRequest {
-        tosAccepted: boolean;
-    }
-
-    export interface MerchantAccountUpdateRequest extends MerchantAccountRequest {}
 
     export interface MerchantBusiness {
         address?: MerchantAddressDetails;
@@ -645,18 +669,7 @@ declare namespace braintree {
     export type PaymentMethod = AndroidPayCard | ApplePayCard | PayPalAccount | CreditCard | SamsungPayCard |
         VenmoAccount | VisaCheckoutCard | MasterpassCard;
 
-    interface PaymentMethodRequest {
-        billingAddressId?: string;
-        cardholderName?: string;
-        cvv?: string;
-        deviceData?: string;
-        expirationDate?: string;
-        expirationMonth?: string;
-        expirationYear?: string;
-        number?: string;
-    }
-
-    export interface PaymentMethodCreateRequest extends PaymentMethodRequest {
+    export interface PaymentMethodCreateRequest {
         billingAddress?: {
             company?: string;
             countryCodeAlpha2?: string;
@@ -671,7 +684,15 @@ declare namespace braintree {
             region?: string;
             streetAddress?: string;
         };
+        billingAddressId?: string;
+        cardholderName?: string;
         customerId: string;
+        cvv?: string;
+        deviceData?: string;
+        expirationDate?: string;
+        expirationMonth?: string;
+        expirationYear?: string;
+        number?: string;
         options?: {
             failOnDuplicatePaymentMethod?: boolean;
             makeDefault?: boolean;
@@ -682,7 +703,7 @@ declare namespace braintree {
         paymentMethodNonce: string;
     }
 
-    export interface PaymentMethodUpdateRequest extends PaymentMethodRequest {
+    export interface PaymentMethodUpdateRequest {
         billingAddress?: {
             company?: string;
             countryCodeAlpha2?: string;
@@ -700,6 +721,14 @@ declare namespace braintree {
                 updateExisting?: boolean
             }
         };
+        billingAddressId?: string;
+        cardholderName?: string;
+        cvv?: string;
+        deviceData?: string;
+        expirationDate?: string;
+        expirationMonth?: string;
+        expirationYear?: string;
+        number?: string;
         options?: {
             makeDefault?: boolean;
             verificationAcmount?: string;
