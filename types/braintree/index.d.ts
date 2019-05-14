@@ -13,10 +13,10 @@ declare namespace braintree {
      */
 
     export enum Environment {
-        Development,
-        Production,
-        Qa,
-        Sandbox
+        Development = 'Development',
+        Production = 'Production',
+        Qa = 'Qa',
+        Sandbox = 'Sandbox'
     }
 
     export interface GatewayConfig {
