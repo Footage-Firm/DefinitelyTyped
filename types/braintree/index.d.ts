@@ -72,22 +72,22 @@ declare namespace braintree {
      * Gateways
      */
 
-    export class AddOnGateway {
+    interface AddOnGateway {
         all(): Promise<AddOn[]>;
     }
 
-    export class AddressGateway {
+    interface AddressGateway {
         create(request: AddressCreateRequest): Promise<ValidatedResponse<Address>>;
         delete(customerId: string, addressId: string): Promise<void>;
         find(customerId: string, addressId: string): Promise<Address>;
         update(customerId: string, addressId: string, updates: AddressUpdateRequest): Promise<ValidatedResponse<Address>>;
     }
 
-    export class ClientTokenGateway {
+    interface ClientTokenGateway {
         generate(request: ClientTokenRequest): Promise<string>;
     }
 
-    export class CreditCardGateway {
+    interface CreditCardGateway {
         create(request: CreditCardCreateRequest): Promise<ValidatedResponse<CreditCard>>;
         delete(creditCardToken: string): Promise<void>;
         expiringBetween(startDate: Date, endDate: Date): Promise<CreditCard>;
@@ -95,11 +95,11 @@ declare namespace braintree {
         update(creditCardToken: string, updates: CreditCardUpdateRequest): Promise<ValidatedResponse<CreditCard>>;
     }
 
-    export class CreditCardVerificationGateway {
+    interface CreditCardVerificationGateway {
         search(searchFn: any): Promise<CreditCardVerification[]>;
     }
 
-    export class CustomerGateway {
+    interface CustomerGateway {
         create(request: CustomerCreateRequest): Promise<ValidatedResponse<Customer>>;
         delete(customerId: string): Promise<void>;
         find(customerId: string): Promise<Customer>;
@@ -107,11 +107,11 @@ declare namespace braintree {
         update(customerId: string, updates: CustomerUpdateRequest): Promise<ValidatedResponse<Customer>>;
     }
 
-    export class DiscountGateway {
+    interface DiscountGateway {
         all(): Promise<Discount[]>;
     }
 
-    export class DisputeGateway {
+    interface DisputeGateway {
         accept(disputeId: string): Promise<ValidatedResponse<Dispute>>;
         addFileEvidence(disputeId: string, evidence: { documentId: string, category?: string }): Promise<ValidatedResponse<Evidence>>;
         addTextEvidence(disputeId: string, evidence: { content: string, category?: string}): Promise<ValidatedResponse<Evidence>>;
@@ -121,7 +121,7 @@ declare namespace braintree {
         search(searchFn: any): Promise<Dispute[]>;
     }
 
-    export class MerchantAccountGateway {
+    interface MerchantAccountGateway {
         all(): Promise<MerchantAccount[]>;
         create(request: MerchantAccountCreateRequest): Promise<ValidatedResponse<MerchantAccount>>;
         createForCurrency(currency: string, id?: string): Promise<ValidatedResponse<MerchantAccount>>;
@@ -129,7 +129,7 @@ declare namespace braintree {
         find(merchantAccountId: string): Promise<MerchantAccount>;
     }
 
-    export class PaymentMethodGateway {
+    interface PaymentMethodGateway {
         create(request: PaymentMethodCreateRequest): Promise<ValidatedResponse<PaymentMethod>>;
         delete(token: string): Promise<void>;
         find(token: string): Promise<PaymentMethod>;
@@ -138,20 +138,20 @@ declare namespace braintree {
         update(token: string, updates: PaymentMethodUpdateRequest): Promise<ValidatedResponse<PaymentMethod>>;
     }
 
-    export class PaymentMethodNonceGateway {
+     interface PaymentMethodNonceGateway {
         create(paymentMethodToken: string): Promise<ValidatedResponse<PaymentMethodNonce>>;
         find(paymentMethodNonce: string): Promise<PaymentMethodNonce>;
     }
 
-    export class PlanGateway {
+     interface PlanGateway {
         all(): Promise<Plan[]>;
     }
 
-    export class SettlementBatchSummaryGateway {
+     interface SettlementBatchSummaryGateway {
         generate(request: {settlementDate: string, groupByCustomField?: string}): Promise<SettlementBatchSummary>;
     }
 
-    export class SubscriptionGateway {
+     interface SubscriptionGateway {
         cancel(subscriptionId: string): Promise<void>;
         create(request: SubscriptionRequest): Promise<ValidatedResponse<Subscription>>;
         find(subscriptionId: string): Promise<Subscription>;
@@ -160,7 +160,7 @@ declare namespace braintree {
         update(subscriptionId: string, updates: SubscriptionRequest): Promise<ValidatedResponse<Subscription>>;
     }
 
-    export class TestingGateway {
+     interface TestingGateway {
         settle(transactionId: string): Promise<ValidatedResponse<Transaction>>;
         settlementConfirm(transactionId: string): Promise<ValidatedResponse<Transaction>>;
         settlementDecline(transactionId: string): Promise<ValidatedResponse<Transaction>>;
@@ -168,7 +168,7 @@ declare namespace braintree {
         settlementPending(transactionId: string): Promise<ValidatedResponse<Transaction>>;
     }
 
-    export class TransactionGateway {
+     interface TransactionGateway {
         cancelRelease(transactionId: string): Promise<void>;
         cloneTransaction(transactionId: string, options: {amount: string, options: {submitForSettlement: boolean}}): Promise<void>;
         find(transactionId: string): Promise<Transaction>;
@@ -182,7 +182,7 @@ declare namespace braintree {
         void(transactionId: string): Promise<ValidatedResponse<Transaction>>;
     }
 
-    export class TransactionLineItemGateway {
+     interface TransactionLineItemGateway {
         findAll(transactionId: string): Promise<TransactionLineItem[]>;
     }
 
@@ -194,7 +194,7 @@ declare namespace braintree {
      * Add-On
      */
 
-    export interface AddOn {
+    export class AddOn {
         amount?: string;
         currentBillingCycle?: number;
         description?: string;
@@ -225,7 +225,7 @@ declare namespace braintree {
      * Address
      */
 
-    export interface Address {
+    export class Address {
         company?: string;
         countryCodeAlpha2?: string;
         countryCodeAlpha3?: string;
@@ -284,7 +284,7 @@ declare namespace braintree {
      * Credit Card
      */
 
-    export interface CreditCard {
+    export class CreditCard {
         billingAddress?: Address;
         bin: string;
         cardholderName?: string;
@@ -380,7 +380,7 @@ declare namespace braintree {
      * Credit Card Verification
      */
 
-    export interface CreditCardVerification {
+    export class CreditCardVerification {
         amount: string;
         avsErrorResponseCode?: string;
         avsPostalCodeResponseCode?: string;
@@ -434,7 +434,7 @@ declare namespace braintree {
      * Customer
      */
 
-    export interface Customer {
+    export class Customer {
         addresses?: Address[];
         androidPayCards?: AndroidPayCard[];
         applePayCards?: ApplePayCard[];
@@ -490,7 +490,7 @@ declare namespace braintree {
      * Discount
      */
 
-    export interface Discount {
+    export class Discount {
         amount?: string;
         currentBillingCycle?: number;
         description?: string;
@@ -521,7 +521,7 @@ declare namespace braintree {
      * Dispute
      */
 
-    export interface Dispute {
+    export class Dispute {
         amountDisputed: string;
         amountWon: string;
         caseNumber: string;
@@ -573,7 +573,7 @@ declare namespace braintree {
      * Merchant Account
      */
 
-    export interface MerchantAccount {
+    export class MerchantAccount {
         business?: MerchantBusiness;
         currencyIsoCode: string;
         default: boolean;
@@ -713,7 +713,7 @@ declare namespace braintree {
      * Payment Method Nonce
      */
 
-    export interface PaymentMethodNonce {
+    export class PaymentMethodNonce {
         binData?: BinData;
         default?: boolean;
         details?: NonceDetails;
@@ -746,7 +746,7 @@ declare namespace braintree {
      * Plan
      */
 
-    export interface Plan {
+    export class Plan {
         addOns?: AddOn[];
         billingDayOfMonth: number;
         billingFrequency: number;
@@ -768,7 +768,7 @@ declare namespace braintree {
      * Settlement Batch Summary
      */
 
-    export interface SettlementBatchSummary {
+    export class SettlementBatchSummary {
         records: Array<Record<string, any>>;
     }
 
@@ -776,7 +776,7 @@ declare namespace braintree {
      * Subscription
      */
 
-    export interface Subscription {
+    export class Subscription {
         addOns?: AddOn[];
         balance: string;
         billingDayOfMonth?: number;
@@ -858,7 +858,7 @@ declare namespace braintree {
      * Transaction
      */
 
-    export interface Transaction {
+    export class Transaction {
         addOns?: AddOn[];
         additionalProccessorResponse: string;
         amount: string;
@@ -1306,7 +1306,7 @@ declare namespace braintree {
      * Transaction Line Item
      */
 
-    export interface TransactionLineItem {
+    export class TransactionLineItem {
         commodityCode?: string;
         description?: string;
         discountAmount?: string;
@@ -1338,7 +1338,7 @@ declare namespace braintree {
      * Android Pay Card
      */
 
-    export interface AndroidPayCard {
+    export class AndroidPayCard {
         bin: string;
         createdAt: Date;
         customerId: string;
@@ -1361,7 +1361,7 @@ declare namespace braintree {
      * Apple Pay Card
      */
 
-    export interface ApplePayCard {
+    export class ApplePayCard {
         bin: string;
         cardType: string;
         cardholderName: string;
@@ -1384,7 +1384,7 @@ declare namespace braintree {
      * Masterpass Card
      */
 
-    export interface MasterpassCard {
+    export class MasterpassCard {
         billingAddress: Address;
         bin: string;
         cardType: string;
@@ -1418,7 +1418,7 @@ declare namespace braintree {
      * PayPal Account
      */
 
-    export interface PayPalAccount {
+    export class PayPalAccount {
         imageUrl: string;
         payerId: string;
         token: string;
@@ -1436,7 +1436,7 @@ declare namespace braintree {
      * Samsung Pay Card
      */
 
-    export interface SamsungPayCard {
+    export class SamsungPayCard {
         billingAddress: Address;
         bin: string;
         cardType: string;
@@ -1471,7 +1471,7 @@ declare namespace braintree {
      * Venmo Account
      */
 
-    export interface VenmoAccount {
+    export class VenmoAccount {
         createdAt: Date;
         customerId: string;
         default: boolean;
@@ -1488,7 +1488,7 @@ declare namespace braintree {
      * Visa Checkout Card
      */
 
-    export interface VisaCheckoutCard {
+    export class VisaCheckoutCard {
         billingAddress: Address;
         bin: string;
         callId: string;
@@ -1524,7 +1524,7 @@ declare namespace braintree {
      * Test
      */
 
-    export interface Test {
+    export class Test {
         CreditCardDefaults: {
             CountryOfIssuance: string;
             IssuingBank: string;
