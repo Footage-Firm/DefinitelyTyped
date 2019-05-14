@@ -386,6 +386,7 @@ declare namespace braintree {
             region?: string;
             streetAddress?: string;
         };
+        createdAt: Date;
         creditCard?: {
             bin: string;
             cardholderName?: string;
@@ -407,7 +408,6 @@ declare namespace braintree {
             token: string;
             uniqueNumberIdentifier: string;
         };
-        createdAt: Date;
         currencyIsoCode: string;
         cvvResponseCode: string;
         gatewayRejectionReason?: string;
@@ -880,33 +880,9 @@ declare namespace braintree {
      */
 
     export interface Transaction {
-        amount: string;
-        channel?: string;
-        customFields?: Record<string, any>;
-        customer?: {
-            company?: string;
-            customFields?: any;
-            email?: string;
-            fax?: string;
-            firstName?: string;
-            id: string;
-            lastName?: string;
-            phone?: string;
-            website?: string;
-        }
-        descriptor?: Descriptor;
-        lineItems?: TransactionLineItem[];
-        merchantAccountId?: string;
-        orderId?: string;
-        purchaseOrderNumber?: string;
-        recurring?: boolean; // Deprecated
-        serviceFeeAmount?: string;
-        shippingAmount?: string;
-        shipsFromPostalCode?: string;
-        taxAmount?: string;
-        taxExempt?: boolean;
         addOns?: AddOn[];
         additionalProccessorResponse: string;
+        amount: string;
         androidPayCard?: {
             bin: string;
             commercial: Commercial
@@ -969,6 +945,7 @@ declare namespace braintree {
             region?: string;
             streetAddress?: string;
         };
+        channel?: string;
         createdAt: Date;
         creditCard?: {
             bin: string;
@@ -994,7 +971,20 @@ declare namespace braintree {
             uniqueNumberIdentifier: string;
         }
         currencyIsoCode: string;
+        customer?: {
+            company?: string;
+            customFields?: any;
+            email?: string;
+            fax?: string;
+            firstName?: string;
+            id: string;
+            lastName?: string;
+            phone?: string;
+            website?: string;
+        }
+        customFields?: Record<string, any>;
         cvvResponseCode: string;
+        descriptor?: Descriptor;
         disbursementDetails?: DisbursementDetails;
         discountAmount?: string;
         discounts?: Discount[];
@@ -1004,6 +994,7 @@ declare namespace braintree {
         facilitatorDetails?: FacilitatorDetails;
         gatewayRejectionReason?: GatewayRejectionReason;
         id: string;
+        lineItems?: TransactionLineItem[];
         masterpassCardDetails?: {
             bin: string;
             cardType: string;
@@ -1026,7 +1017,9 @@ declare namespace braintree {
             productId: string;
             token: string;
         };
+        merchantAccountId?: string;
         networkTransactionId?: string;
+        orderId?: string;
         paymentInstrumentType: PaymentInstrumentType;
         paypalAccount?: {
             authorizationId: string;
@@ -1056,6 +1049,8 @@ declare namespace braintree {
         processorResponseType: TransactionProcessorResponseType;
         processorSettlementResponseCode: string;
         processorSettlementResponseText: string;
+        purchaseOrderNumber?: string;
+        recurring?: boolean; // Deprecated
         refundIds?: string[];
         refundedTransactionId?: string;
         riskData?: TransactionRiskData;
@@ -1082,6 +1077,7 @@ declare namespace braintree {
             sourceCardLast4: string;
             token: string;
         };
+        serviceFeeAmount?: string;
         settlementBatchId?: string;
         shipping?: {
             company?: string;
@@ -1098,6 +1094,8 @@ declare namespace braintree {
             region?: string;
             streetAddress?: string;
         };
+        shippingAmount?: string;
+        shipsFromPostalCode?: string;
         status: TransactionStatus;
         statusHistory?: TransactionStatusHistory;
         subscription?: {
@@ -1105,6 +1103,8 @@ declare namespace braintree {
             billingPeriodStartDate: Date;
         };
         subscriptionId?: string;
+        taxAmount?: string;
+        taxExempt?: boolean;
         threeDSecureInfo?: TransactionThreeDSecureInfo;
         type: string;
         updatedAt: Date;
@@ -1546,18 +1546,23 @@ declare namespace braintree {
      */
 
     export interface VisaCheckoutCard {
+        billingAddress: Address;
         bin: string;
         callId: string;
         cardType: string;
         cardholderName: string;
         commercial: Commercial;
         countryOfIssuance: string;
+        createdAt: Date;
+        customerId: string;
         customerLocation: CustomerLocation;
         debit: Debit;
+        default: boolean;
         durbinRegulated: DurbinRegulated;
         expirationDate: string;
         expirationMonth: string;
         expirationYear: string;
+        expired: boolean;
         healthcare: HealthCare;
         imageUrl: string;
         issuingBank: string;
@@ -1566,13 +1571,8 @@ declare namespace braintree {
         payroll: Payroll;
         prepaid: Prepaid;
         productId: string;
-        token: string;
-        billingAddress: Address;
-        createdAt: Date;
-        customerId: string;
-        default: boolean;
-        expired: boolean;
         subscriptions?: Subscription[];
+        token: string;
         uniqueNumberIdentifier: string;
         updatedAt: Date;
     }
@@ -1623,28 +1623,10 @@ declare namespace braintree {
     }
 
     /**
-     * Errors
-     */
-
-    export interface AuthenticationError extends Error {}
-    export interface AuthorizationError extends Error {}
-    export interface DownForMaintenanceError extends Error {}
-    export interface InvalidChallengeError extends Error {}
-    export interface InvalidKeysError extends Error {}
-    export interface InvalidSignatureError extends Error {}
-    export interface InvalidTransparentRedirectHashError extends Error {}
-    export interface NotFoundError extends Error {}
-    export interface ServerError extends Error {}
-    export interface TestOperationPerformedInProductionError extends Error {}
-    export interface TooManyRequestsError extends Error {}
-    export interface UnexpectedError extends Error {}
-    export interface UpgradeRequired extends Error {}
-
-    /**
      * Test
      */
 
-    interface Test {
+    export interface Test {
         CreditCardDefaults: {
             CountryOfIssuance: string;
             IssuingBank: string;
@@ -1748,4 +1730,22 @@ declare namespace braintree {
             Fail: string;
         };
     }
+
+    /**
+     * Errors
+     */
+
+    export interface AuthenticationError extends Error {}
+    export interface AuthorizationError extends Error {}
+    export interface DownForMaintenanceError extends Error {}
+    export interface InvalidChallengeError extends Error {}
+    export interface InvalidKeysError extends Error {}
+    export interface InvalidSignatureError extends Error {}
+    export interface InvalidTransparentRedirectHashError extends Error {}
+    export interface NotFoundError extends Error {}
+    export interface ServerError extends Error {}
+    export interface TestOperationPerformedInProductionError extends Error {}
+    export interface TooManyRequestsError extends Error {}
+    export interface UnexpectedError extends Error {}
+    export interface UpgradeRequired extends Error {}
 }
