@@ -12,10 +12,7 @@ declare namespace braintree {
      * Braintree Config and Client
      */
 
-    export enum Environment {
-        Production,
-        Sandbox
-    }
+    export type Environment = 'Production' | 'Sandbox';
 
     export interface Config {
         environment: Environment;
@@ -541,14 +538,7 @@ declare namespace braintree {
         updatedAt: Date;
     }
 
-    export enum DisputeStatus {
-        Accepted,
-        Disputed,
-        Expired,
-        Open,
-        Lost,
-        Won,
-    }
+    export type DisputeStatus = 'Accepted' | 'Disputed' | 'Expired' | 'Open' | 'Lost' | 'Won';
 
     export interface DisputeStatusHistory {
         disbursementDate: Date;
@@ -631,11 +621,7 @@ declare namespace braintree {
         ssnLast4?: string;
     }
 
-    export enum MerchantAccountStatus {
-        Pending,
-        Active,
-        Suspended,
-    }
+    export type MerchantAccountStatus = 'Pending' | 'Active' | 'Suspended';
 
     /**
      * Payment Method
@@ -739,17 +725,7 @@ declare namespace braintree {
         lastTwo?: string;
     }
 
-    export enum PaymentMethodType {
-        AndroidPayCard,
-        ApplePayCard,
-        CreditCard,
-        MasterpassCard,
-        PayPalAccount,
-        UsBankAccount,
-        VenmoAccount,
-        VisaCheckoutCard,
-        SamsungPayCard,
-    }
+    export type PaymentMethodType = 'AndroidPayCard' | 'ApplePayCard' | 'CreditCard' |'MasterpassCard' | 'PayPalAccount' | 'UsBankAccount' | 'VenmoAccount' | 'VisaCheckoutCard' | 'SamsungPayCard';
 
     /**
      * Plan
@@ -859,19 +835,9 @@ declare namespace braintree {
         subscriptionSource: SubscriptionSource;
     }
 
-    export enum SubscriptionStatus {
-        Active,
-        Canceled,
-        Expired,
-        PastDue,
-        Pending,
-    }
+    export type SubscriptionStatus = 'Active' | 'Canceled' | 'Expired' | 'PastDue' | 'Pending';
 
-    export enum SubscriptionSource {
-        api,
-        control_panel,
-        recurring,
-    }
+    export type SubscriptionSource = 'api' | 'control_panel' | 'recurring';
 
     /**
      * Transaction
@@ -1274,13 +1240,7 @@ declare namespace braintree {
         success: boolean;
     }
 
-    export enum EscrowStatus {
-        hold_pending,
-        held,
-        release_pending,
-        released,
-        refunded,
-    }
+    export type EscrowStatus = 'hold_pending' | 'held' | 'release_pending' | 'released' | 'refunded';
 
     export interface FacilitatedDetails {
         merchantId: string;
@@ -1294,34 +1254,11 @@ declare namespace braintree {
         sourcePaymentMethodToken: string;
     }
 
-    export enum GatewayRejectionReason {
-        application_incomplete,
-        avs,
-        avs_and_cvv,
-        cvv,
-        duplicate,
-        fraud,
-        risk_threshold,
-        three_d_secure,
-        token_issuance,
-    }
+    export type GatewayRejectionReason = 'application_incomplete' | 'avs' | 'avs_and_cvv' | 'cvv' | 'duplicate' | 'fraud' | 'risk_threshold' | 'three_d_secure' | 'token_issuance';
 
-    export enum PaymentInstrumentType {
-        android_pay_card,
-        apple_pay_card,
-        credit_card,
-        masterpass_card,
-        paypal_account,
-        samsung_pay_card,
-        venmo_account,
-        visa_checkout_card,
-    }
+    export type PaymentInstrumentType = 'android_pay_card' | 'apple_pay_card' | 'credit_card' | 'masterpass_card' | 'paypal_account' | 'samsung_pay_card' | 'venmo_account' | 'visa_checkout_card';
 
-    export enum TransactionProcessorResponseType {
-        approved,
-        soft_declined,
-        hard_declined
-    }
+    export type TransactionProcessorResponseType = 'approved' | 'soft_declined' | 'hard_declined';
 
     export interface TransactionRiskData {
         decision: string;
@@ -1330,20 +1267,8 @@ declare namespace braintree {
         id: string;
     }
 
-    export enum TransactionStatus {
-        AuthorizationExpired,
-        Authorized,
-        Authorizing,
-        SettlementPending,
-        SettlemnetDeclined,
-        Failed,
-        GatewayRejected,
-        ProcessorDeclined,
-        Settled,
-        Settling,
-        SubmittedForSettlement,
-        Voided,
-    }
+    export type TransactionStatus = 'AuthorizationExpired' | 'Authorized' | 'Authorizing' | 'SettlementPending' | 'SettlemnetDeclined' |
+        'Failed' | 'GatewayRejected' | 'ProcessorDeclined' | 'Settled' | 'Settling' | 'SubmittedForSettlement' | 'Voided';
 
     export interface TransactionStatusHistory {
         amount: string;
@@ -1353,11 +1278,7 @@ declare namespace braintree {
         user: string;
     }
 
-    export enum TransactionSource {
-        Api,
-        ControlPanel,
-        Recurring,
-    }
+    export type TransactionSource = 'Api' | 'ControlPanel' | 'Recurring';
 
     export interface TransactionThreeDSecureInfo {
         enrolled: string;
@@ -1387,8 +1308,16 @@ declare namespace braintree {
     }
 
     /**
-     * Payment Method Sub-Classes
+     * Payment Method Instances
      */
+
+    export type Commercial = 'Yes' | 'No' | 'Unknown';
+    export type CustomerLocation = 'US' | 'International';
+    export type Debit = 'Yes' | 'No' | 'Unknown';
+    export type DurbinRegulated = 'Yes' | 'No' | 'Unknown';
+    export type HealthCare = 'Yes' | 'No' | 'Unknown';
+    export type Payroll = 'Yes' | 'No' | 'Unknown';
+    export type Prepaid = 'Yes' | 'No' | 'Unknown';
 
     /**
      * Android Pay Card
@@ -1573,51 +1502,6 @@ declare namespace braintree {
         token: string;
         uniqueNumberIdentifier: string;
         updatedAt: Date;
-    }
-
-    /**
-     * Payment Method Enums
-     */
-
-    export enum Commercial {
-        Yes,
-        No,
-        Unknown,
-    }
-
-    export enum CustomerLocation {
-        International,
-        US,
-    }
-
-    export enum Debit {
-        Yes,
-        No,
-        Unknown,
-    }
-
-    export enum DurbinRegulated {
-        Yes,
-        No,
-        Unknown,
-    }
-
-    export enum HealthCare {
-        Yes,
-        No,
-        Unknown,
-    }
-
-    export enum Payroll {
-        Yes,
-        No,
-        Unknown,
-    }
-
-    export enum Prepaid {
-        Yes,
-        No,
-        Unknown,
     }
 
     /**

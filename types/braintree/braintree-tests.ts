@@ -8,7 +8,7 @@ import { BraintreeGateway, Environment, Address, AddressCreateRequest,
  * Gateway
  */
 const gateway: BraintreeGateway = new braintree.BraintreeGateway({
-    environment: Environment.Production,
+    environment: 'Production',
     merchantId: 'abc123',
     publicKey: 'def456',
     privateKey: 'xyz789',
