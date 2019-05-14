@@ -2,13 +2,37 @@
 // Project: https://github.com/braintree/braintree_node
 // Definitions by: Sam Rubin <https://github.com/smrubin>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript Version: 3.2
 
-import { ReadonlyDeep } from "type-fest";
-
-// export = braintree;
-// export as namespace braintree;
+export = braintree;
+export as namespace braintree;
 
 declare namespace braintree {
+    /**
+     * Helpers
+     */
+    type Primitive = null | undefined | string | number | boolean | symbol | bigint;
+
+    type ReadonlyDeep<T> = T extends Primitive | ((...arguments: any[]) => unknown)
+        ? T
+        : T extends ReadonlyMap<infer KeyType, infer ValueType>
+            ? ReadonlyMapDeep<KeyType, ValueType>
+            : T extends ReadonlySet<infer ItemType>
+                ? ReadonlySetDeep<ItemType>
+                : T extends object
+                    ? ReadonlyObjectDeep<T>
+                    : unknown;
+
+    interface ReadonlyMapDeep<KeyType, ValueType>
+        extends ReadonlyMap<ReadonlyDeep<KeyType>, ReadonlyDeep<ValueType>> {}
+
+    interface ReadonlySetDeep<ItemType>
+        extends ReadonlySet<ReadonlyDeep<ItemType>> {}
+
+    type ReadonlyObjectDeep<ObjectType extends object> = {
+        readonly [PropertyType in keyof ObjectType]: ReadonlyDeep<ObjectType[PropertyType]>
+    };
+
     /**
      * Braintree Config and Client
      */
@@ -254,7 +278,6 @@ declare namespace braintree {
 
     export interface AddressUpdateRequest extends AddressRequest {}
 
-
     /**
      * Client Token
      */
@@ -357,7 +380,7 @@ declare namespace braintree {
             options?: {
                 updateExisting?: boolean;
             }
-        }
+        };
         cardholderName?: string;
         cvv?: string;
         expirationDate?: string;
@@ -969,7 +992,7 @@ declare namespace braintree {
             productId: string;
             token: string;
             uniqueNumberIdentifier: string;
-        }
+        };
         currencyIsoCode: string;
         customer?: {
             company?: string;
@@ -981,7 +1004,7 @@ declare namespace braintree {
             lastName?: string;
             phone?: string;
             website?: string;
-        }
+        };
         customFields?: Record<string, any>;
         cvvResponseCode: string;
         descriptor?: Descriptor;
@@ -1167,7 +1190,7 @@ declare namespace braintree {
             expirationYear?: string;
             number?: string;
             token?: string
-        }
+        };
         customer?: {
             company?: string;
             customFields?: any;
@@ -1178,7 +1201,7 @@ declare namespace braintree {
             lastName?: string;
             phone?: string;
             website?: string;
-        }
+        };
         customerId?: string;
         customFields?: Record<string, any>;
         descriptor?: Descriptor;

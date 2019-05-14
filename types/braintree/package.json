@@ -1,6 +1,0 @@
-{
-    "private": true,
-    "dependencies": {
-        "type-fest": "~0.5"
-    }
-}
