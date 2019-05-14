@@ -455,7 +455,6 @@ declare namespace braintree {
         email?: string;
         fax?: string;
         firstName?: string;
-        id: string;
         lastName?: string;
         paymentMethodNonce?: string;
         phone?: string;
