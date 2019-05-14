@@ -12,8 +12,15 @@ declare namespace braintree {
      * Braintree Config and Client
      */
 
+    export enum Environment {
+        Development,
+        Production,
+        Qa,
+        Sandbox
+    }
+
     export interface GatewayConfig {
-        environment: Environment;
+        environment: any;
         merchantId: string;
         publicKey: string;
         privateKey: string;
@@ -55,17 +62,6 @@ declare namespace braintree {
         settlementBatchSumary: T extends SettlementBatchSummary ? SettlementBatchSummary : never;
         subscription: T extends Subscription ? Subscription : never;
         transaction: T extends Transaction ? Transaction : never;
-    }
-
-    export class Environment {
-        constructor(server: string, port: string, authUrl: string, ssl: boolean, graphQLServer: string, graphQLPort: string);
-        baseUrl(): string;
-        baseGraphQLUrl(): string;
-        uriScheme(): string;
-        Devleopment: Environment;
-        Qa: Environment;
-        Sandbox: Environment;
-        Production: Environment;
     }
 
     /**
