@@ -2,7 +2,7 @@
 // Project: https://github.com/braintree/braintree_node
 // Definitions by: Sam Rubin <https://github.com/smrubin>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// TypeScript Version: 2.1
+// TypeScript Version: 2.8
 
 export = braintree;
 export as namespace braintree;
@@ -42,16 +42,21 @@ declare namespace braintree {
         transactionLineItem: TransactionLineItemGateway;
     }
 
-    type Entity = 'address' | 'creditCard' | 'customer' | 'dispute' | 'merchantAccount' | 'paymentMethod' | 'settlementBatchSummary' | 'subscription' | 'transaction';
-
-    type ValidatedResponse<T> = {
-        [key in Entity]: T;
-    } & {
-        readonly success: boolean;
-        errors: () => ReadonlyArray<string[]>;
-        readonly message: string;
+    interface ValidatedResponse<T> {
+        success: boolean;
+        errors: () => string[];
+        message: string;
         params: Record<string, any>;
-    };
+        address: T extends Address ? Address : never;
+        creditCard: T extends CreditCard ? CreditCard : never;
+        customer: T extends Customer ? Customer : never;
+        dispute: T extends Dispute ? Dispute : never;
+        merchantAccount: T extends MerchantAccount ? MerchantAccount : never;
+        paymentMethod: T extends PaymentMethod ? PaymentMethod : never;
+        settlementBatchSumary: T extends SettlementBatchSummary ? SettlementBatchSummary : never;
+        subscription: T extends Subscription ? Subscription : never;
+        transaction: T extends Transaction ? Transaction : never;
+    }
 
     /**
      * Gateways
